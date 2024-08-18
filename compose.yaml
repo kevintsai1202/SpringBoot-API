@@ -1,0 +1,28 @@
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      - MARIADB_DATABASE=mydb
+      - MARIADB_PASSWORD=password
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_USER=dbuser
+    ports:
+      - 3308:3306
+
+  wildfly:
+    image: jboss/wildfly:21.0.2.Final
+    ports: 
+      - 8088:8080
+    depends_on: 
+      - mariadb
+      
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      - PMA_ARBITRARY=1'
+    depends_on: 
+      - mariadb
